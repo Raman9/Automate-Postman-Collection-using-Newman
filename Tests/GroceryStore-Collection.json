@@ -1,0 +1,1169 @@
+{
+	"info": {
+		"_postman_id": "e8f30078-8b72-429b-9572-93aa9078085c",
+		"name": "Grocery Store API-Automation Framework",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25333352"
+	},
+	"item": [
+		{
+			"name": "Products Module",
+			"item": [
+				{
+					"name": "Get all Products",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Schema Validation to Ensure we got a list back\r",
+									"pm.test(\"Response is an array of products\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"    pm.expect(jsonData.length).to.be.above(0);});\r",
+									"\r",
+									"    // // 3. Workflow Logic: Capture a Product ID for the next steps\r",
+									"// We find the first product that is in stock and save its ID"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "meat-seafood",
+									"disabled": true
+								},
+								{
+									"key": "results",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "available",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a product",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"clear.console();"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products/:productId?product-lable=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								":productId"
+							],
+							"query": [
+								{
+									"key": "product-lable",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "2177"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart Module",
+			"item": [
+				{
+					"name": "Create a new cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Capture the new Cart ID\r",
+									"pm.test(\"Cart ID is generated\", () => {\r",
+									"    pm.expect(jsonData).to.have.property(\"cartId\");\r",
+									"    pm.collectionVariables.set(\"cartId\", jsonData.cartId);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/carts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a cart",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/carts/:cartId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								":cartId"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "meat-seafood",
+									"disabled": true
+								},
+								{
+									"key": "results",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "available",
+									"value": "true",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "qmaoR8Bjk7FtIqErI28Fb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get cart Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/carts/:cartId/items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								":cartId",
+								"items"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "qmaoR8Bjk7FtIqErI28Fb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify an item in cart",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"quantity\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/carts/:cartId/items/143374777",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								":cartId",
+								"items",
+								"143374777"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "qmaoR8Bjk7FtIqErI28Fb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Replace item in the cart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"productId\": 1225,\r\n   \"quantity\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/carts/:cartId/items/143374777",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								":cartId",
+								"items",
+								"143374777"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "qmaoR8Bjk7FtIqErI28Fb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an item in the cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"productId\": 1225,\r\n   \"quantity\": 3\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/carts/:cartId/items/143374777",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								":cartId",
+								"items",
+								"143374777"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "qmaoR8Bjk7FtIqErI28Fb"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders Module",
+			"item": [
+				{
+					"name": "Get all orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Verify Order Creation\r",
+									"pm.test(\"Order created successfully\", () => {\r",
+									"    pm.expect(jsonData.created).to.be.true;\r",
+									"    pm.expect(jsonData).to.have.property(\"orderId\");\r",
+									"});\r",
+									"\r",
+									"// 2. Capture Order ID for cleanup or verification\r",
+									"pm.collectionVariables.set(\"orderId\", jsonData.orderId);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4cec8a8232d8d12b38623c08df18477e35e1de675c330cce2fb4f68c5ee9a0c6",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single order",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/:orderId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								":orderId"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "meat-seafood",
+									"disabled": true
+								},
+								{
+									"key": "results",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "available",
+									"value": "true",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{OrderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an order",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4cec8a8232d8d12b38623c08df18477e35e1de675c330cce2fb4f68c5ee9a0c6",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"customerName\": \"John Singh\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/:orderId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								":orderId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "ZUGhbpW-tuVRkyJJGrYQx"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an order",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "4cec8a8232d8d12b38623c08df18477e35e1de675c330cce2fb4f68c5ee9a0c6",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/:orderId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								":orderId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "ZUGhbpW-tuVRkyJJGrYQx"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register API Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 (Client Registered)\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains accessToken\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('accessToken');\r",
+									"});\r",
+									"\r",
+									"// Save the token for future requests\r",
+									"let token = pm.response.json().accessToken;\r",
+									"pm.collectionVariables.set(\"accessToken\", token);\r",
+									"\r",
+									"// Log for debugging\r",
+									"console.log(\"Saved access token:\", token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clientName\": \"{{clientName}}\",\r\n  \"clientEmail\": \"{{randomEmail}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api-clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api-clients"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Negative/Boundary Tests(Global)",
+			"item": [
+				{
+					"name": "NegativeTest-Non Existing Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Returns 404 for invalid product\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// 2. Verify Error Message format\r",
+									"pm.test(\"Error message is descriptive\", () => {\r",
+									"    pm.expect(pm.response.json().error).to.include(\"No product with id\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "344e85f4874f4f0ce9422593c2bc55e3d5caefe0178d4b5bbfbef414ce28003b",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/products/99999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"99999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Workflow Tests(End to End)",
+			"item": [
+				{
+					"name": "HappyPathFlow",
+					"item": [
+						{
+							"name": "Health/Status check Request",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"API is up and healthy\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.status).to.eql(\"UP\");\r",
+											"});\r",
+											"pm.test(\"Response time is acceptable (<500ms)\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/status",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all ProductsHP",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();\r",
+											"console.log(response);\r",
+											"\r",
+											"// 1. Schema Validation to Ensure we got a list back\r",
+											"pm.test(\"Response is an array of products\", () => {\r",
+											"    pm.expect(response).to.be.an(\"array\");\r",
+											"    pm.expect(response.length).to.be.above(0);});\r",
+											"\r",
+											"    // // 3. Workflow Logic: Capture a Product ID for the next steps\r",
+											"// We find the first product that is in stock and save its ID\r",
+											"\r",
+											"pm.test(\"Product ID\", () => {\r",
+											"   \r",
+											"   pm.collectionVariables.set(\"productId\", response[1].id);\r",
+											"   console.log(response[1]);\r",
+											"    });\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/products?category=meat-seafood&available=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "meat-seafood"
+										},
+										{
+											"key": "results",
+											"value": "4",
+											"disabled": true
+										},
+										{
+											"key": "available",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new cartHP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();\r",
+											"console.log(response);\r",
+											"// 1. Capture the new Cart ID\r",
+											"pm.test(\"Cart ID is generated\", () => {\r",
+											"    pm.expect(response).to.have.property(\"cartId\");\r",
+											"    pm.collectionVariables.set(\"cartId\", response.cartId);\r",
+											"    console.log(response.cartId)\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/carts",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"carts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add an item to cartHP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 1. Verify the item was actually added\r",
+											"pm.test(\"Item added successfully\", () => {\r",
+											"    pm.expect(pm.response.json().created).to.be.true;\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"productId\": {{productId}},\r\n   \"quantity\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/carts/:cartId/items",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"carts",
+										":cartId",
+										"items"
+									],
+									"variable": [
+										{
+											"key": "cartId",
+											"value": "{{cartId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new orderHP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();\r",
+											"console.log(response);\r",
+											"\r",
+											"\r",
+											"pm.test(\"Order Id is generated\", () => {\r",
+											"    \r",
+											"    \r",
+											"    pm.collectionVariables.set(\"orderId\", response.orderId);\r",
+											"    console.log(\"Saved Order ID: \" + response.orderId);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{accessToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cartId\": \"{{cartId}}\",\r\n    \"customerName\": \"{{customerName}}\"\r\n}\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/orders",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get single orderHP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Order status is Created\"),()=> {\r",
+											"pm.expect(response.created).to.be.true;\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{accessToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/orders/:orderId",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "meat-seafood",
+											"disabled": true
+										},
+										{
+											"key": "results",
+											"value": "4",
+											"disabled": true
+										},
+										{
+											"key": "available",
+											"value": "true",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{orderId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an orderHP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Order deleted successfully\", () => {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/orders/:orderId",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{orderId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Cleanup",
+			"item": [
+				{
+					"name": "Delete an order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.test(\"Status code is 204 No content\",  () => \r",
+									"{\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/:orderId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								":orderId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{OrderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Utilities/Setup",
+			"item": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"function generateEmail() {\r",
+					"    return `user_${Math.floor(Math.random()*100000)}@test.com`;\r",
+					"}\r",
+					"\r",
+					"pm.environment.set(\"randomEmail\", generateEmail());\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://simple-grocery-store-api.click"
+		},
+		{
+			"key": "cartId",
+			"value": ""
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		},
+		{
+			"key": "productId",
+			"value": ""
+		},
+		{
+			"key": "category",
+			"value": "fruit"
+		},
+		{
+			"key": "userEmail",
+			"value": "testuser@example.com"
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "customerName",
+			"value": ""
+		}
+	]
+}
