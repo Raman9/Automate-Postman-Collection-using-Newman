@@ -1,0 +1,40 @@
+{
+	"id": "20bf2f3d-2e26-45ff-b704-f4917523b1ad",
+	"name": "Grocery-API-Env",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "https://simple-grocery-store-api.click",
+			"type": "default",
+			"enabled": false
+		},
+		{
+			"key": "clientName",
+			"value": "",
+			"type": "default",
+			"enabled": false
+		},
+		{
+			"key": "clientEmail",
+			"value": "",
+			"type": "default",
+			"enabled": false
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "default",
+			"enabled": false
+		},
+		{
+			"key": "randomEmail",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"color": null,
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-12-12T19:07:59.150Z",
+	"_postman_exported_using": "Postman/11.75.6"
+}
